@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 Dashboard - Login</title>
+
+    <!-- Open Sans Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+    <style>
+        :root {
+            --agro-green-dark: #4C7C59;
+            --agro-green-light: #8FB88F;
+            --agro-yellow: #F2C94C;
+            --agro-blue: #6CA0DC;
+            --agro-bg-light: #f6f9f7;
+            --agro-text-dark: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, var(--agro-green-dark), var(--agro-blue));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+        }
+
+        .login-box {
+            background-color: #fff;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .login-header span {
+            font-size: 50px;
+            color: var(--agro-yellow);
+        }
+
+        .login-header h2 {
+            margin: 10px 0 5px;
+            font-size: 1.5rem;
+            color: var(--agro-text-dark);
+        }
+
+        .login-header p {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            background-color: var(--agro-bg-light);
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 15px;
+        }
+
+        .input-group span {
+            font-size: 24px;
+            color: var(--agro-green-dark);
+            margin-right: 10px;
+        }
+
+        .input-group input {
+            border: none;
+            outline: none;
+            background: none;
+            flex: 1;
+            font-size: 1rem;
+            color: var(--agro-text-dark);
+        }
+
+        .login-btn {
+            background-color: var(--agro-green-dark);
+            color: white;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background-color: var(--agro-green-light);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <span class="material-icons-outlined">lock</span>
+                <h2>ESP32 DASHBOARD</h2>
+                <p>Please login to continue</p>
+            </div>
+            <form id="loginForm">
+                <div class="input-group">
+                    <span class="material-icons-outlined">account_circle</span>
+                    <input type="text" placeholder="Username" id="username" required>
+                </div>
+                <div class="input-group">
+                    <span class="material-icons-outlined">lock</span>
+                    <input type="password" placeholder="Password" id="password" required>
+                </div>
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Simple login check (for demo)
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            let user = document.getElementById("username").value;
+            let pass = document.getElementById("password").value;
+
+            if (user === "admin" && pass === "1234") {
+                window.location.href = "index.html"; // Chuyển sang dashboard
+            } else {
+                alert("Invalid username or password!");
+            }
+        });
+    </script>
+</body>
+
+</html>

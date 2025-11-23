@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Dashboard</title>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <script src="/script.js"></script>
+
+
+    <style>
+        body {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            grid-template-rows: 70px 1fr;
+            grid-template-areas:
+                "sidebar header"
+                "sidebar main";
+            margin: 0;
+            height: 100vh;
+            font-family: 'Open Sans', sans-serif;
+            color: #1e293b;
+            background: #f4f8fb;
+        }
+
+        header {
+            grid-area: header;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #sidebar {
+            grid-area: sidebar;
+            background: #0a1f44;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.15);
+        }
+
+        #main-content {
+            grid-area: main;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .sidebar-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-list-item {
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            transition: background 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-list-item:hover,
+        .sidebar-list-item.active {
+            background: #115f97;
+        }
+
+        .sidebar-list-item span {
+            font-size: 22px;
+        }
+
+        .header-left span {
+            font-size: 24px;
+            margin-right: 10px;
+            color: #074580;
+        }
+
+        .header-right span {
+            margin-left: 15px;
+            color: #074580;
+            cursor: pointer;
+        }
+
+
+        /* ======================================= */
+        /* ====== 1. TABLET (Small Desktop / iPad) - Dưới 1200px ====== */
+        /* ======================================= */
+        @media screen and (max-width: 1200px) {
+            /* Sidebar vẫn giữ nguyên, nhưng main content chiếm ít không gian hơn */
+
+            body {
+                /* Chuyển biểu đồ thành 1 cột */
+            }
+
+            .main-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        /* ======================================= */
+        /* ====== 2. MOBILE (Dưới 768px) ====== */
+        /* ======================================= */
+        @media screen and (max-width: 768px) {
+            body {
+                /* Sidebar chuyển xuống thành hàng đầu tiên, Header và Main Content nằm dưới */
+                grid-template-columns: 1fr;
+                /* Chỉ còn 1 cột chính */
+                grid-template-rows: auto 70px 1fr;
+                /* Sắp xếp lại: Sidebar, Header, Main */
+                grid-template-areas:
+                    "sidebar"
+                    "header"
+                    "main";
+            }
+
+            #sidebar {
+                /* Sidebar mặc định ẩn đi trên mobile */
+                display: none;
+                /* Nếu muốn làm sidebar bật/tắt (như menu hamburger), cần thêm JS */
+            }
+
+            /* Hiển thị Header chiếm toàn bộ chiều rộng */
+            header {
+                width: 100%;
+            }
+
+            #main-content {
+                padding: 20px 15px;
+                /* Giảm padding cho màn hình nhỏ */
+            }
+
+            /* Card cảm biến: Tự động xếp chồng nếu không đủ 250px cho mỗi card */
+            .main-cards {
+                grid-template-columns: 1fr;
+                /* Từng card chiếm 100% chiều rộng */
+                gap: 15px;
+            }
+
+            /* Biểu đồ: Giữ nguyên 1 cột (đã set ở 1200px) */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar-expanded" aria-label="Main sidebar">
+        <div class="sidebar-header">
+            <div class="brand">
+                <span class="material-icons-outlined brand-icon" aria-hidden="true">memory</span>
+                <div class="brand-text">
+                    <div class="brand-name">IOT LAB</div>
+                    <div class="brand-sub">ESP32 • IoT</div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav" role="navigation">
+            <ul class="sidebar-list">
+                <li class="sidebar-list-item" data-page="dashboard.html">
+                    <span class="sidebar-icon material-icons-outlined" aria-hidden="true">dashboard</span>
+                    <span class="sidebar-label">Dashboard</span>
+                </li>
+
+                <li class="sidebar-list-item" data-page="control.html">
+                    <span class="sidebar-icon material-icons-outlined" aria-hidden="true">lightbulb</span>
+                    <span class="sidebar-label">Device Control</span>
+                </li>
+
+                <li class="sidebar-list-item" data-page="cloud.html">
+                    <span class="sidebar-icon material-icons-outlined" aria-hidden="true">cloud</span>
+                    <span class="sidebar-label">Cloud Monitor</span>
+                </li>
+
+                <li class="sidebar-list-item" data-page="system_log.html">
+                    <span class="sidebar-icon material-icons-outlined" aria-hidden="true">settings</span>
+                    <span class="sidebar-label">System Logs</span>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user">
+                <img src="https://i.pravatar.cc/40" alt="User avatar" class="user-avatar">
+                <div class="user-info">
+                    <div class="user-name">Admin</div>
+                    <div class="user-role">Operator</div>
+                </div>
+            </div>
+            <div class="sidebar-meta">
+                <span class="version">v1.0</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- overlay for mobile -->
+    <div id="sidebar-overlay" class="sidebar-overlay" tabindex="-1"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-left">
+
+        </div>
+        <div class="header-right">
+            <span class="material-icons-outlined">notifications</span>
+            <span class="material-icons-outlined">email</span>
+            <span class="material-icons-outlined">account_circle</span>
+        </div>
+    </header>
+
+    <!-- Nội dung chính (load động) -->
+    <main id="main-content">
+        <h2>Loading Dashboard...</h2>
+    </main>
+
+    <script>
+        // Hàm load nội dung HTML
+        function loadPage(page) {
+            fetch(page)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("main-content").innerHTML = html;
+
+                    document.querySelectorAll(".sidebar-list-item").forEach(el => el.classList.remove("active"));
+                    document.querySelector(`.sidebar-list-item[data-page='${page}']`).classList.add("active");
+
+                    if (page === "dashboard.html") {
+                        setTimeout(() => {
+                            initDynamicCharts();
+                            updateEnvFromSensors();
+                            setInterval(updateEnvFromSensors, 3000);
+                        }, 50);
+                    }
+                });
+        }
+
+
+        // Gán sự kiện click cho sidebar
+        document.querySelectorAll(".sidebar-list-item").forEach(item => {
+            item.addEventListener("click", () => {
+                const page = item.getAttribute("data-page");
+                loadPage(page);
+            });
+        });
+
+        // Tải dashboard mặc định
+        loadPage("dashboard.html");
+    </script>
+</body>
+
+</html>

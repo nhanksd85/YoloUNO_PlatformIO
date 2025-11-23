@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Control | IoT Dashboard</title>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <style>
+        :root {
+            --iot-bg: #f4f8fb;
+            --iot-surface: #ffffff;
+            --iot-primary: #115f97;
+            --iot-secondary: #074580;
+            --iot-accent: #ff5252;
+            --iot-text: #1e293b;
+            --iot-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Open Sans', sans-serif;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            grid-template-rows: 70px 1fr;
+            grid-template-areas:
+                "sidebar header"
+                "sidebar main";
+            height: 100vh;
+            background: var(--iot-bg);
+            color: var(--iot-text);
+        }
+
+        /* Sidebar và Header (từ layout chung) */
+        #sidebar-container {
+            grid-area: sidebar;
+            background: #0a1f44;
+            color: #fff;
+            padding: 20px;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.15);
+        }
+
+        main {
+            grid-area: main;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .sidebar-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-list-item {
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .sidebar-list-item:hover,
+        .sidebar-list-item.active {
+            background: #115f97;
+        }
+
+        .sidebar-list-item a {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Control Panel */
+        .control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .control-header h1 {
+            font-size: 1.8rem;
+            color: var(--iot-primary);
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--iot-primary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .main-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .device-card {
+            background: var(--iot-primary);
+            border-radius: 18px;
+            padding: 25px;
+            color: white;
+            text-align: center;
+            box-shadow: var(--iot-shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .device-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.25);
+        }
+
+        .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 10px;
+            border-radius: 50%;
+            background: #1e5aa8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .led-on {
+            background: var(--iot-accent);
+            box-shadow: 0 0 25px 10px rgba(255, 82, 82, 0.8);
+        }
+
+        .led-off {
+            background: #555;
+            box-shadow: none;
+        }
+
+        .device-card h2 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .device-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 12px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 10px;
+            padding: 10px 22px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #fff;
+        }
+
+        .btn-on {
+            background-color: var(--iot-accent);
+        }
+
+        .btn-off {
+            background-color: #444;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .neopixel-card {
+            background: var(--iot-secondary);
+        }
+
+        .neopixel-card input[type="color"] {
+            margin-top: 15px;
+            width: 60px;
+            height: 40px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        @keyframes fan-spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pump-wave {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        #fanIcon.led-on .material-icons-outlined {
+            animation: fan-spin 1s linear infinite;
+            /* Quay liên tục */
+        }
+
+        /* Hiệu ứng PUMP (sóng) */
+        #pumpIcon.led-on .material-icons-outlined {
+            animation: pump-wave 1.5s ease-in-out infinite;
+            /* Lắc lư */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar + Header -->
+
+    <!-- Main -->
+    <main>
+        <div class="main-cards">
+            <div class="device-card">
+                <div class="icon-wrapper led-off" id="led1Icon">
+                    <span class="material-icons-outlined">lightbulb</span>
+                </div>
+                <h2>LED 1</h2>
+                <h3 id="led1Status">OFF</h3>
+                <button class="btn btn-on" onclick="toggleDevice('led1','on')">Turn ON</button>
+                <button class="btn btn-off" onclick="toggleDevice('led1','off')">Turn OFF</button>
+            </div>
+
+            <div class="device-card">
+                <div class="icon-wrapper led-off" id="led2Icon">
+                    <span class="material-icons-outlined">lightbulb</span>
+                </div>
+                <h2>LED 2</h2>
+                <h3 id="led2Status">OFF</h3>
+                <button class="btn btn-on" onclick="toggleDevice('led2','on')">Turn ON</button>
+                <button class="btn btn-off" onclick="toggleDevice('led2','off')">Turn OFF</button>
+            </div>
+
+            <div class="device-card neopixel-card">
+                <h2>NEOPIXEL</h2>
+                <h3 id="neoStatus">Color Picker</h3>
+                <input type="color" id="neoColor" value="#00ff00" onchange="setNeoColor(this.value)">
+            </div>
+
+            <div class="device-card">
+                <div class="icon-wrapper led-off" id="pumpIcon">
+                    <span class="material-icons-outlined">waves</span>
+                </div>
+                <h2>PUMP</h2>
+                <h3 id="pumpStatus">OFF</h3>
+                <button class="btn btn-on" onclick="toggleDevice('pump','on')">Turn ON</button>
+                <button class="btn btn-off" onclick="toggleDevice('pump','off')">Turn OFF</button>
+            </div>
+            <div class="device-card">
+                <div class="icon-wrapper led-off" id="fanIcon">
+                    <span class="material-icons-outlined">air</span>
+                </div>
+                <h2>FAN</h2>
+                <h3 id="fanStatus">OFF</h3>
+                <button class="btn btn-on" onclick="toggleDevice('fan','on')">Turn ON</button>
+                <button class="btn btn-off" onclick="toggleDevice('fan','off')">Turn OFF</button>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-on" onclick="allOn()">All ON</button>
+            <button class="btn btn-off" onclick="allOff()">All OFF</button>
+        </div>
+    </main>
+
+</body>
+
+
+</html>

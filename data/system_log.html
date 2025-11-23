@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Logs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        :root {
+            --iot-bg: #f4f8fb;
+            --iot-surface: #ffffff;
+            --iot-primary: #0a3d62;
+            --iot-accent: #0077ff;
+            --iot-danger: #ff5252;
+            --iot-success: #00c853;
+            --iot-warning: #ffb300;
+            --iot-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background: var(--iot-bg);
+            color: #1e293b;
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .system-container {
+            padding: 40px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .system-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .system-header h1 {
+            font-size: 1.8rem;
+            color: var(--iot-primary);
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--iot-accent);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Info Cards */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: var(--iot-surface);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--iot-shadow);
+        }
+
+        .info-card .material-icons-outlined {
+            font-size: 36px;
+            margin-bottom: 8px;
+            color: var(--iot-accent);
+        }
+
+        .info-card h2 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .progress-bar {
+            background: #e0e7ff;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--iot-accent);
+            width: 40%;
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        /* Task Table */
+        .task-card {
+            background: var(--iot-surface);
+            border-radius: 16px;
+            box-shadow: var(--iot-shadow);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: var(--iot-primary);
+            color: white;
+        }
+
+        /* Log Section */
+        .log-card {
+            background: var(--iot-surface);
+            border-radius: 16px;
+            box-shadow: var(--iot-shadow);
+            padding: 25px;
+        }
+
+        .log-card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .log-content {
+            background: #f0f5ff;
+            border-radius: 10px;
+            padding: 12px;
+            font-family: monospace;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+
+        .btn-group {
+            margin-top: 15px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #fff;
+            transition: all 0.2s ease;
+        }
+
+        .btn-refresh {
+            background: var(--iot-accent);
+        }
+
+        .btn-clear {
+            background: var(--iot-danger);
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="system-container">
+
+        <div class="info-grid">
+            <div class="info-card">
+                <span class="material-icons-outlined">schedule</span>
+                <h2>Uptime</h2>
+                <p id="uptime">--:--:--</p>
+            </div>
+            <div class="info-card">
+                <span class="material-icons-outlined">memory</span>
+                <h2>CPU Load</h2>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="cpuFill"></div>
+                </div>
+                <p id="cpuUsage">45%</p>
+            </div>
+            <div class="info-card">
+                <span class="material-icons-outlined">storage</span>
+                <h2>Free Heap</h2>
+                <p id="heapFree">78 KB</p>
+            </div>
+        </div>
+
+        <div class="task-card">
+            <h2>Task Overview</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Task Name</th>
+                        <th>Priority</th>
+                        <th>Stack (bytes)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="taskTable">
+                    <tr>
+                        <td>SensorTask</td>
+                        <td>3</td>
+                        <td>2048</td>
+                        <td>Running</td>
+                    </tr>
+                    <tr>
+                        <td>WiFiTask</td>
+                        <td>2</td>
+                        <td>3072</td>
+                        <td>Running</td>
+                    </tr>
+                    <tr>
+                        <td>CloudTask</td>
+                        <td>1</td>
+                        <td>1024</td>
+                        <td>Idle</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="log-card">
+            <h2>System Log</h2>
+            <div class="log-content" id="logContent">
+                [12:00] Booting system...<br>
+                [12:01] WiFi connected to ACLAB_NET<br>
+                [12:02] CoreIoT connected successfully<br>
+                [12:04] SensorTask updated temperature: 27.4°C
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-refresh" onclick="refreshLogs()">Refresh</button>
+                <button class="btn btn-clear" onclick="clearLogs()">åClear</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function refreshLogs() {
+            const now = new Date().toLocaleTimeString();
+            document.getElementById("logContent").innerHTML += `<br>[${now}] Logs refreshed successfully.`;
+        }
+
+        function clearLogs() {
+            document.getElementById("logContent").innerHTML = "[System log cleared]";
+        }
+
+        // Giả lập CPU load động
+        setInterval(() => {
+            const cpu = Math.floor(Math.random() * 70) + 20;
+            document.getElementById("cpuUsage").innerText = cpu + "%";
+            document.getElementById("cpuFill").style.width = cpu + "%";
+        }, 3000);
+
+        // Giả lập uptime
+        let seconds = 0;
+        setInterval(() => {
+            seconds++;
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = seconds % 60;
+            document.getElementById("uptime").innerText = `${h.toString().padStart(2, '0')}:${m
+                .toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }, 1000);
+    </script>
+</body>
+
+</html>

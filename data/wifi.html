@@ -1,0 +1,244 @@
+<!-- <!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ESP32 Wi-Fi & IoT Setup</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #78a7c7, #e8e8c0);
+      font-family: 'Segoe UI', sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .overlay {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 30px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 600px;
+    }
+
+    h3.wifi-title {
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 25px;
+      color: #003366;
+    }
+
+    label {
+      display: block;
+      font-weight: 500;
+      color: #002244;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 10px;
+      background-color: #003366;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-primary:hover {
+      background-color: #005599;
+    }
+
+    .alert-custom {
+      background-color: #ffe0e0;
+      border: 1px solid #ffaaaa;
+      color: #990000;
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="overlay">
+    <h3 class="wifi-title">CONFIG ESP32</h3>
+
+    <form action="/connect" method="get">
+      <label>Wi-Fi</label>
+      <select name="ssid" required>
+        {{options}}
+      </select>
+
+      <label>Password Wi-Fi</label>
+      <input type="password" name="pass" placeholder="Enter password Wi-Fi" />
+
+      <label>Server IoT</label>
+      <input type="text" name="token" placeholder="Access Token" />
+
+      <label>Sending frequency of data</label>
+      <input type="number" min="1" name="frequency" placeholder="Ex: 10" />
+
+      <label>Telemetry</label>
+      <input type="text" name="telemetry" placeholder="Telemetry" />
+
+      <button type="submit" class="btn-primary">SAVE</button>
+    </form>
+  </div>
+</body>
+
+</html> -->
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wi-Fi Settings</title>
+  <style>
+    :root{
+      --orange1:#ff6a00; --orange2:#ff7f11;
+      --blue1:#0057c2;   --blue2:#0076ff;
+      --bg:#f2f5f9;      --card:#ffffff;
+      --text:#0f1b2d;    --muted:#6b7a90;
+      --primary:#ff4d4f; --dark:#2e2f36;
+      --radius:22px;     --shadow:0 12px 28px rgba(16,24,40,.16);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:system-ui, Segoe UI, Roboto, Arial;
+      background:var(--bg); color:var(--text);
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+    }
+    .card{
+      width:min(92vw, 460px); background:var(--card); border-radius:26px;
+      box-shadow:var(--shadow); overflow:hidden;
+    }
+    .header{
+      padding:26px 26px 20px; color:#fff;
+      background:linear-gradient(135deg,var(--orange1),var(--orange2));
+      position:relative;
+    }
+    .header h2{margin:0 0 6px; font-size:28px; letter-spacing:.4px}
+    .header p{margin:0; opacity:.9}
+    .gear{
+      position:absolute; right:18px; top:16px; font-size:26px; opacity:.9
+    }
+    .body{padding:24px 22px 8px}
+    .field{margin-bottom:16px}
+    label{display:block; font-weight:700; margin:0 0 8px}
+    .input-wrap{
+      position:relative; display:flex; align-items:center;
+      border:1.5px solid #e5e8ef; border-radius:14px; background:#fbfdff;
+      padding:10px 14px;
+    }
+    .input-wrap:focus-within{border-color:#b4c6ff; box-shadow:0 0 0 4px rgba(0,118,255,.12)}
+    input[type=text], input[type=password]{
+      border:none; outline:none; width:100%; font-size:16px; background:transparent
+    }
+    .eye{
+      cursor:pointer; user-select:none; font-size:18px; opacity:.7;
+      transition:transform .12s ease
+    }
+    .eye:hover{transform:scale(1.05)}
+    .actions{display:flex; gap:12px; margin-top:6px}
+    .btn{
+      flex:1; border:none; padding:14px 16px; border-radius:14px; font-size:16px;
+      cursor:pointer; transition:transform .12s ease, box-shadow .12s ease, opacity .2s;
+      box-shadow:0 8px 20px rgba(0,0,0,.12); font-weight:700; color:#fff;
+    }
+    .btn:hover{transform:scale(1.03)}
+    .btn:active{transform:scale(.98)}
+    .primary{background:var(--primary)}
+    .secondary{background:var(--dark)}
+    .msg{margin:14px 4px 2px; min-height:22px; color:var(--muted); font-weight:600}
+    .footer{padding:16px; text-align:center; color:var(--muted); font-size:13px}
+
+    .spinner{
+      width:18px; height:18px; border-radius:50%;
+      border:2.5px solid rgba(255,255,255,.5); border-top-color:#fff;
+      animation:spin .9s linear infinite; display:inline-block; vertical-align:middle; margin-right:8px;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .toast{
+      position:fixed; left:50%; transform:translateX(-50%);
+      bottom:22px; background:#0f5132; color:#d1f7e3;
+      padding:12px 16px; border-radius:12px; box-shadow:var(--shadow); display:none;
+    }
+    .toast.error{background:#5f1a1a; color:#ffd6d6}
+    .toast.show{display:block}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <div class="gear">⚙️</div>
+      <h2>Wi-Fi Settings</h2>
+      <p>Nhập SSID và mật khẩu để kết nối mạng</p>
+    </div>
+
+    <div class="body">
+      <form id="wifiForm">
+        <div class="field">
+          <label for="ssid">SSID</label>
+          <div class="input-wrap">
+            <input type="text" id="ssid" name="ssid" placeholder="Ví dụ: MyHome_2.4G" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="pass">Password</label>
+          <div class="input-wrap">
+            <input type="password" id="pass" name="pass" placeholder="Tối thiểu 8 ký tự" required>
+            <div class="eye" id="togglePass" title="Hiện/ẩn mật khẩu">👁️</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn primary" id="btnConnect">
+            Connect
+          </button>
+          <button type="button" class="btn secondary" onclick="window.location='/'">Back</button>
+        </div>
+        <div id="msg" class="msg"></div>
+      </form>
+    </div>
+
+    <div class="footer">ESP32 • Settings</div>
+  </div>
+
+  <div id="toast" class="toast">Đã kết nối Wi-Fi!</div>
+
+  <!-- Dùng chung script.js -->
+  <script src="/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚙️ Cấu hình Wi-Fi YOLO UNO</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #e0f7ff, #f2f3f5);
+            color: #333;
+            text-align: center;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: linear-gradient(135deg, #1e90ff, #00bfff);
+            padding: 40px 45px;
+            border-radius: 25px;
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 420px;
+            color: #f2f3f5;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            font-size: 1.9em;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        input[type=text],
+        input[type=password] {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1em;
+            margin-bottom: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input[type=text]:focus,
+        input[type=password]:focus {
+            box-shadow: 0 0 10px #00ffcc;
+            transform: scale(1.02);
+        }
+
+        button {
+            margin-top: 10px;
+            background: #00ffcc;
+            color: #000;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+
+        button:hover {
+            background: #00e0b0;
+            transform: scale(1.07);
+        }
+
+        #msg {
+            margin-top: 15px;
+            font-weight: 500;
+            font-size: 1em;
+            color: #fff;
+        }
+
+        .emoji {
+            font-size: 1.3em;
+            margin-right: 6px;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>⚙️ Cấu hình thiết bị <br> <strong>YOLO UNO</strong></h1>
+        <form id="ConfigForm">
+            <input name="ssid" id="ssid" type="text" placeholder="📶 Tên Wi-Fi (SSID)" required><br>
+            <input name="password" id="pass" type="password" placeholder="🔒 Mật khẩu (bỏ trống nếu không có)"><br>
+            <input name="token" id="token" type="text" placeholder="🔑 TOKEN CORE IOT" required><br>
+            <input name="server" id="server" type="text" placeholder="🌐 Máy chủ (VD: app.coreiot.io)" required><br>
+            <input name="port" id="port" type="text" placeholder="⚡ Cổng (VD: 1883)" required><br><br>
+            <button type="submit">🚀 Kết nối</button>
+        </form>
+        <div id="msg"></div>
+        <div class="footer">💡 Hãy đảm bảo thông tin chính xác trước khi kết nối!</div>
+    </div>
+
+    <script>
+        document.getElementById('ConfigForm').onsubmit = function (e) {
+            e.preventDefault();
+            let ssid = document.getElementById('ssid').value;
+            let pass = document.getElementById('pass').value;
+            let token = document.getElementById('token').value;
+            let server = document.getElementById('server').value;
+            let port = document.getElementById('port').value;
+
+            document.getElementById('msg').innerText = "🔄 Đang gửi thông tin...";
+
+            fetch(`/connect?ssid=${encodeURIComponent(ssid)}&pass=${encodeURIComponent(pass)}&token=${encodeURIComponent(token)}&server=${encodeURIComponent(server)}&port=${encodeURIComponent(port)}`)
+                .then(r => r.text())
+                .then(msg => {
+                    document.getElementById('msg').innerText = msg.includes("Thành công") ? "✅ " + msg : "❌ " + msg;
+                })
+                .catch(err => {
+                    document.getElementById('msg').innerText = "⚠️ Lỗi kết nối tới thiết bị!";
+                });
+        };
+    </script>
+</body>
+
+</html>

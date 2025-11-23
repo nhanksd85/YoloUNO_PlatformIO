@@ -1,0 +1,43 @@
+<div class="main-cards">
+    <!-- 🌡 TEMPERATURE -->
+    <div class="card temp-card">
+        <div class="card-inner">
+            <div class="icon-wrapper">
+                <span class="material-icons-outlined">device_thermostat</span>
+            </div>
+            <div class="sensor-info">
+                <h2>TEMPERATURE</h2>
+                <h1 id="temperature">-- °C</h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- 💧 HUMIDITY -->
+    <div class="card humid-card">
+        <div class="card-inner">
+            <div class="icon-wrapper">
+                <span class="material-icons-outlined">water_drop</span>
+            </div>
+            <div class="sensor-info">
+                <h2>HUMIDITY</h2>
+                <h1 id="humidity">-- %</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-body">
+    <div class="chart temp-chart-card">
+        <div class="text-center">
+            <h2 class="card-title mb-3">Temp Over Time</h2>
+            <canvas id="tempChart" height="200"></canvas>
+        </div>
+    </div>
+
+    <div class="chart humidity-chart-card">
+        <div class="text-center">
+            <h2 class="card-title mb-3">Humidity Over Time</h2>
+            <canvas id="humidityChart" height="200"></canvas>
+        </div>
+    </div>
+</div>

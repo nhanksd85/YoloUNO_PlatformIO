@@ -1,0 +1,352 @@
+body {
+  margin          : 0;
+  font-family     : "Poppins", Arial, sans-serif;
+  display         : flex;
+  height          : 100vh;
+  background-color: #eef2f7;
+}
+
+/* Sidebar */
+.sidebar {
+  width           : 260px;
+  background-color: #2294F2;
+  color           : white;
+  display         : flex;
+  flex-direction  : column;
+  align-items     : center;
+  box-shadow      : 3px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.logo-container {
+  width          : 100%;
+  background     : white;
+  display        : flex;
+  justify-content: center;
+  align-items    : center;
+  padding        : 20px 0;
+  border-bottom  : 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.logo-img {
+  width : 80%;
+  height: auto;
+}
+
+.nav-item {
+  width        : 90%;
+  padding      : 16px 20px;
+  margin       : 8px 0;
+  font-size    : 18px;
+  font-weight  : 600;
+  cursor       : pointer;
+  border-radius: 10px;
+  color        : #ecf6ff;
+  transition   : all 0.3s ease;
+  display      : flex;
+  align-items  : center;
+  gap          : 12px;
+}
+
+.nav-item.active {
+  background: #fff;
+  color     : #2294F2;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Main Content */
+.main-content {
+  flex      : 1;
+  padding   : 40px 60px;
+  overflow-y: auto;
+}
+
+/* Home Gauges */
+.gauges-container {
+  display        : flex;
+  flex-wrap      : wrap;
+  gap            : 30px;
+  justify-content: center;
+}
+
+.gauge-card {
+  background   : white;
+  border-radius: 16px;
+  box-shadow   : 0 6px 16px rgba(0, 0, 0, 0.1);
+  padding      : 30px;
+  text-align   : center;
+  width        : 300px;
+  transition   : transform 0.3s ease;
+}
+
+#gauge_temp,
+#gauge_humi {
+  width : 260px;
+  height: 260px;
+  margin: 0 auto;
+}
+
+/* Device Page */
+.device-list {
+  display        : flex;
+  flex-wrap      : wrap;
+  gap            : 25px;
+  margin-top     : 30px;
+  justify-content: center;
+}
+
+.device-card {
+  background   : #fff;
+  border-radius: 20px;
+  box-shadow   : 0 5px 20px rgba(0, 0, 0, 0.1);
+  width        : 240px;
+  padding      : 25px 20px;
+  text-align   : center;
+  position     : relative;
+  transition   : all 0.3s ease;
+}
+
+.device-card:hover {
+  transform : translateY(-5px);
+  box-shadow: 0 8px 25px rgba(34, 148, 242, 0.25);
+}
+
+.device-icon {
+  font-size    : 36px;
+  color        : #2294F2;
+  margin-bottom: 10px;
+}
+
+.toggle-btn {
+  width        : 100%;
+  border       : none;
+  border-radius: 12px;
+  padding      : 12px;
+  font-weight  : 600;
+  font-size    : 16px;
+  cursor       : pointer;
+  background   : #e3e3e3;
+  transition   : 0.3s;
+}
+
+.toggle-btn.on {
+  background: linear-gradient(90deg, #2294F2, #1b7fe0);
+  color     : white;
+  box-shadow: 0 4px 12px rgba(34, 148, 242, 0.4);
+}
+
+.delete-icon {
+  position: absolute;
+  top     : 10px;
+  right   : 12px;
+  color   : #e74c3c;
+  cursor  : pointer;
+}
+
+.add-relay-btn {
+  position     : fixed;
+  bottom       : 35px;
+  right        : 35px;
+  background   : linear-gradient(135deg, #2294F2, #1a75e6);
+  color        : white;
+  border       : none;
+  border-radius: 50%;
+  width        : 80px;
+  /* to hơn chút */
+  height       : 80px;
+  font-size    : 34px;
+  /* icon lớn hơn */
+  cursor       : pointer;
+  box-shadow   : 0 6px 20px rgba(0, 0, 0, 0.25);
+  transition   : 0.3s;
+}
+
+.add-relay-btn:hover {
+  transform : scale(1.08);
+  box-shadow: 0 8px 25px rgba(34, 148, 242, 0.4);
+}
+
+
+/* Settings */
+.settings-section {
+  display        : flex;
+  justify-content: center;
+  align-items    : flex-start;
+  padding-top    : 40px;
+  height         : 100%;
+}
+
+.settings-card {
+  background   : white;
+  padding      : 50px 60px;
+  border-radius: 20px;
+  box-shadow   : 0 10px 25px rgba(0, 0, 0, 0.15);
+  width        : 850px;
+  /* ✅ to hơn */
+  max-width    : 95%;
+  text-align   : center;
+}
+
+.settings-card h2 {
+  color        : #2294F2;
+  margin-bottom: 15px;
+}
+
+.settings-card p {
+  color        : #666;
+  margin-bottom: 35px;
+  font-size    : 15px;
+}
+
+/* FORM STYLE — vertical layout with spacing */
+#settingsForm {
+  width         : 100%;
+  display       : flex;
+  flex-direction: column;
+  align-items   : center;
+}
+
+/* mỗi input-group là 1 dòng, cách nhau */
+.input-group {
+  position     : relative;
+  width        : 98%;
+  /* ✅ rộng gần hết khung */
+  max-width    : 760px;
+  /* ✅ dài hơn hẳn */
+  margin-bottom: 20px;
+  /* ✅ tạo khoảng cách giữa các dòng */
+}
+
+.input-group i {
+  position : absolute;
+  top      : 50%;
+  left     : 18px;
+  transform: translateY(-50%);
+  color    : #2294F2;
+  font-size: 18px;
+}
+
+.input-group input {
+  width           : 100%;
+  padding         : 16px 18px 16px 54px;
+  border-radius   : 14px;
+  border          : 1.5px solid #ccc;
+  font-size       : 17px;
+  background-color: #f9f9f9;
+  transition      : all 0.3s ease;
+  box-sizing      : border-box;
+}
+
+.input-group input:focus {
+  border-color    : #2294F2;
+  box-shadow      : 0 0 10px rgba(34, 148, 242, 0.25);
+  background-color: #fff;
+}
+
+/* Save Button */
+.btn-save {
+  margin-top   : 25px;
+  background   : linear-gradient(90deg, #2294F2, #1b7fe0);
+  color        : white;
+  border       : none;
+  border-radius: 12px;
+  padding      : 16px 44px;
+  font-size    : 18px;
+  font-weight  : 600;
+  cursor       : pointer;
+  box-shadow   : 0 6px 18px rgba(34, 148, 242, 0.45);
+  transition   : all 0.3s ease;
+}
+
+.btn-save:hover {
+  transform : translateY(-2px);
+  box-shadow: 0 8px 22px rgba(34, 148, 242, 0.55);
+}
+
+
+/* Dialog */
+.dialog-overlay {
+  position       : fixed;
+  top            : 0;
+  left           : 0;
+  right          : 0;
+  bottom         : 0;
+  background     : rgba(0, 0, 0, 0.5);
+  display        : flex;
+  justify-content: center;
+  align-items    : center;
+  z-index        : 100;
+}
+
+.dialog {
+  background   : white;
+  border-radius: 20px;
+  padding      : 35px 30px;
+  width        : 380px;
+  text-align   : center;
+  box-shadow   : 0 12px 35px rgba(0, 0, 0, 0.25);
+  animation    : popIn 0.25s ease;
+}
+
+.dialog h3 {
+  font-size: 22px;
+  color    : #2294F2;
+}
+
+.dialog.warning h3 {
+  color: #e74c3c;
+}
+
+.dialog p {
+  color    : #666;
+  font-size: 15px;
+}
+
+.input-field input {
+  width        : 90%;
+  padding      : 12px;
+  border       : 1.5px solid #ccc;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.dialog-buttons {
+  display        : flex;
+  justify-content: center;
+  gap            : 15px;
+}
+
+.dialog-buttons button {
+  padding      : 10px 22px;
+  border       : none;
+  border-radius: 10px;
+  font-weight  : 600;
+  cursor       : pointer;
+  transition   : 0.3s;
+}
+
+.dialog-buttons .confirm {
+  background: linear-gradient(90deg, #2294F2, #1b7fe0);
+  color     : white;
+}
+
+.dialog-buttons .danger {
+  background: #e74c3c;
+  color     : white;
+}
+
+.dialog-buttons .cancel {
+  background: #ddd;
+  color     : #333;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.8);
+    opacity  : 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity  : 1;
+  }
+}
