@@ -8,6 +8,9 @@
 
 extern float glob_temperature;
 extern float glob_humidity;
+extern int glob_analog_raw;
+extern volatile float tinyml_result;
+extern volatile bool tinyml_ready;
 
 extern String WIFI_SSID;
 extern String WIFI_PASS;

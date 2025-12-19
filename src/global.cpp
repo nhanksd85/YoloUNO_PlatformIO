@@ -1,6 +1,9 @@
 #include "global.h"
 float glob_temperature = 0;
 float glob_humidity = 0;
+int glob_analog_raw = 0;
+volatile float tinyml_result = 0;
+volatile bool tinyml_ready = false;
 
 String WIFI_SSID;
 String WIFI_PASS;

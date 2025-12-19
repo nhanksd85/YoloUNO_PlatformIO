@@ -1,6 +1,6 @@
 #include "temp_humi_monitor.h"
 DHT20 dht20;
-LiquidCrystal_I2C lcd(33,16,2);
+//LiquidCrystal_I2C lcd(33,16,2);
 
 
 void temp_humi_monitor(void *pvParameters){
