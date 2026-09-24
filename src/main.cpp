@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
+#include "temp_humi_monitor.h"
 
 #define NEO_PIN 45
 #define LED_COUNT 1 
@@ -18,14 +19,14 @@ void neo_blinky(void *pvParameters){
         strip.show(); // Update the strip
 
         // Wait for 1000 milliseconds
-        vTaskDelay(1000);
+        vTaskDelay(500);
 
         // Set the pixel to off
         strip.setPixelColor(0, strip.Color(0, 0, 0)); // Turn pixel 0 off
         strip.show(); // Update the strip
 
         // Wait for another 1000 milliseconds
-        vTaskDelay(1000);
+        vTaskDelay(500);
     }
 }
 
@@ -46,6 +47,7 @@ void setup() {
   Serial.begin(115200);
   xTaskCreate(led_blinky, "LED Control", 2048, NULL, 2, NULL);
   xTaskCreate(neo_blinky, "NEO Control", 2048, NULL, 2, NULL);
+  xTaskCreate(temp_humi_monitor, "TEMP and HUMI", 2048, NULL, 2, NULL);
 }
 
 void loop() {
